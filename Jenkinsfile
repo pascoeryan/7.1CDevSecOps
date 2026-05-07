@@ -20,11 +20,13 @@ stage('SonarCloud Analysis') {
     steps {
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
             sh '''
-            sonar-scanner \
-              -Dsonar.projectKey=pascoeryan_7.1CDevSecOps \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN
+                docker run --rm \
+                  -e SONAR_HOST_URL="https://sonarcloud.io" \
+                  -e SONAR_TOKEN="$SONAR_TOKEN" \
+                  -v "$PWD:/usr/src" \
+                  sonarsource/sonar-scanner-cli \
+                  -Dsonar.projectKey=pascoeryan_7.1CDevSecOps \
+                  -Dsonar.sources=.
             '''
         }
     }
