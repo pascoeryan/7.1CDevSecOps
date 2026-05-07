@@ -20,11 +20,11 @@ stage('SonarCloud Analysis') {
     steps {
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
             sh '''
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-7.0.2.4839-linux-x64.zip
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-6.2.1.4610-linux-x64.zip
 
-            unzip sonar-scanner-7.0.2.4839-linux-x64.zip
+            unzip sonar-scanner-6.2.1.4610-linux-x64.zip
 
-            export PATH=$PATH:$(pwd)/sonar-scanner-7.0.2.4839-linux-x64/bin
+            export PATH=$PATH:$(pwd)/sonar-scanner-6.2.1.4610-linux-x64/bin
             
             sonar-scanner
             '''
