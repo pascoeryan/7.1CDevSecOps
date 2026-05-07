@@ -2,9 +2,12 @@ pipeline {
 agent any
 stages {
 stage('Checkout') {
-steps {
-git branch: 'main', url: 'https://github.com/pascoeryan/7.1CDevSecOps.git'
-}
+  steps {
+    sh '''
+      docker run --rm -v "$PWD:/repo" alpine/git \
+        clone https://github.com/pascoeryan/7.1CDevSecOps.git repo
+    '''
+  }
 }
 stage('Install Dependencies') {
 steps {
