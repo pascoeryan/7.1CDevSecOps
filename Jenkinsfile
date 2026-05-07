@@ -17,19 +17,17 @@ sh 'npm test || true' // Allows pipeline to continue despite test failures
 }
 }
 stage('SonarCloud Analysis') {
-    steps {
-        withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-            sh '''
-                docker run --rm \
-                  -e SONAR_HOST_URL="https://sonarcloud.io" \
-                  -e SONAR_TOKEN="$SONAR_TOKEN" \
-                  -v "$PWD:/usr/src" \
-                  sonarsource/sonar-scanner-cli \
-                  -Dsonar.projectKey=pascoeryan_7.1CDevSecOps \
-                  -Dsonar.sources=.
-            '''
-        }
+  steps {
+    withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+      sh '''
+        docker run --rm \
+          -e SONAR_HOST_URL="https://sonarcloud.io" \
+          -e SONAR_TOKEN="$SONAR_TOKEN" \
+          -v "$PWD:/usr/src" \
+          sonarsource/sonar-scanner-cli
+      '''
     }
+  }
 }
 stage('Generate Coverage Report') {
 steps {
