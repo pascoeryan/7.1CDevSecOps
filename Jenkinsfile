@@ -24,7 +24,7 @@ pipeline {
 
         stage('Coverage') {
             steps {
-                sh 'npm run coverage || true'
+                sh 'npm test -- --coverage || true'
             }
         }
 
