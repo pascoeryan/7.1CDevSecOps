@@ -34,16 +34,21 @@ pipeline {
                     sh '''
                         set -e
 
-                        # Download scanner only if not already present
-                        if [ ! -d sonar-scanner ]; then
-                            wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-                            unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip
-                            mv sonar-scanner-5.0.1.3006-linux sonar-scanner
-                        fi
+                        # Clean old install to avoid unzip prompts
+                        rm -rf sonar-scanner
+                        rm -f sonar-scanner-cli-5.0.1.3006-linux.zip
 
-                        # Run scanner using full path
-                        ${WORKSPACE}/sonar-scanner/bin/sonar-scanner \
-                          -Dsonar.login=$SONAR_TOKEN
+                        # Download
+                        wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+
+                        # Force unzip (NO PROMPTS)
+                        unzip -o sonar-scanner-cli-5.0.1.3006-linux.zip
+
+                        mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+
+                        # Run scanner using absolute path
+                        ./sonar-scanner/bin/sonar-scanner \
+                        -Dsonar.login=$SONAR_TOKEN
                     '''
                 }
             }
